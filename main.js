@@ -1,19 +1,26 @@
 $(document).ready(function () {
-    $(".link").on("click", function(e){
-        e.preventDefault()
-        //var x= $(this).parent().children().eq(0).html();
-        var value = $('#myTextarea').val();
-        $(".segundacol").prepend("<div id='tweet'> <li>" + value + "</li></div>");
-        $("<div id='LikeButton' class='glyphicon glyphicon-thumbs-up custombuttons' aria-hidden='true' style='cursor:pointer'></div>").appendTo("#tweet");
-        $("<div id='TrashButton' class='glyphicon glyphicon-trash custombuttons' style='cursor:pointer'></div>").appendTo("#tweet");
-        var num = 1;
-        //$("#contador").html('<p>0</p>');
-        $("#LikeButton").click(function(){
-            $(this).parent().children().eq(1).html(num++);
-            $(this).css("color", "#4099ff");
-          });
-          $("#TrashButton").click(function(){
-            $(this).parent().remove();
-      });
-    });
+  $(".link").on("click", function (e) {
+    e.preventDefault()
+    var value = $('#myTextarea').val();
+    $(".segundacol").prepend("<div id='tweet'> <li>" + value + "</li></div>");
+    $("<div />")
+      .addClass('glyphicon glyphicon-thumbs-up custombuttons likeable')
+      .data('likes', 0)
+      .appendTo("#tweet");
+    $("<div />")
+      .addClass('glyphicon glyphicon-trash custombuttons deletable')
+      .appendTo("#tweet");
+  });
+  var like = function () {
+    var likes = $(this).data('likes') + 1;
+    $(this).data('likes', likes);
+    $(this).parent().children().eq(1).html(likes);
+    $(this).css("color", "#4099ff");
+  };
+  var trash = function () {
+    $(this).parent().remove();
+  };
+  $('.segundacol')
+    .on('click', '.likeable', like)
+    .on('click', '.deletable', trash);
 });
